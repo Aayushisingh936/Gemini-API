@@ -16,7 +16,7 @@ askBtn.addEventListener("click", async () => {
     try {
 
         const response = await fetch("/ask-gemini", {
-            method: "POST",
+            method: "POST", 
 
             headers: {
                 "Content-Type": "application/json"
