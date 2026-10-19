@@ -1,39 +1,85 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ask Gemini</title>
-
+    <meta name="theme-color" content="#0f172a">
+    <meta name="description" content="Ask questions and learn new things with your Gemini AI Assistant.">
+    <title>Gemini AI Assistant</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>🤖 Ask Gemini</h1>
-        <p>Ask a question and get an AI-powered answer.</p>
 
-        <textarea
-             id="question"
-             placeholder="Type your question here..."
-        ></textarea>
+    <main class="container">
 
-        <button id="askBtn">
-            Ask Gemini
-        </button>
-
-        <div class="answer-box">
-
-            <h2>Answer</h2>
-
-            <p id="answer">
-                Your answer will appear here...
+        <header class="header">
+            <div class="logo">✦</div>
+            <h1>Gemini AI Assistant</h1>
+            <p class="subtitle">
+                Ask questions, explore ideas, and learn something new.
             </p>
+            <span class="status">
+                <span class="status-dot"></span>
+                AI Assistant
+            </span>
+        </header>
 
-        </div>
+        <section class="prompt-section">
+            <label for="question">Your Question</label>
 
-    </div>
+            <textarea
+                id="question"
+                placeholder="Ask me anything..."
+                maxlength="5000"
+                rows="4"
+            ></textarea>
 
+            <div class="input-info">
+                <span>Be curious. Ask anything!</span>
+                <span id="charCount">0 / 5000</span>
+            </div>
+
+            <div class="actions">
+                <button type="button" id="askBtn" class="ask-btn">
+                    Ask Gemini <span>→</span>
+                </button>
+
+                <button type="button" id="clearBtn" class="clear-btn">
+                    Clear
+                </button>
+            </div>
+        </section>
+
+        <section class="answer-box" aria-live="polite">
+            <div class="answer-header">
+                <div>
+                    <span class="answer-icon">✦</span>
+                    <h2>Gemini's Answer</h2>
+                </div>
+
+                <span id="answerStatus" class="answer-status">
+                    Waiting for your question
+                </span>
+            </div>
+
+            <div id="answer" class="answer-content">
+                <p class="placeholder">
+                    Your answer will appear here. Enter a question above
+                    to get started!
+                </p>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>Built with HTML, CSS, JavaScript and Gemini API</p>
+            <p>AI can make mistakes. Verify important information.</p>
+        </footer>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
     <script src="script.js"></script>
-    
 </body>
 </html>
