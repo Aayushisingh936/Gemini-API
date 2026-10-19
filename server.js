@@ -1,7 +1,7 @@
 
-const express = require("express");
-const dotenv = require("dotenv");
-const { GoogleGenAI } = require("@google/genai");
+import express from "express";
+import dotenv from "dotenv";
+import { GoogleGenAI } from "@google/genai";
 
 dotenv.config();
 
@@ -73,13 +73,11 @@ Question: ${question}`
 });
 
 // Start server
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server running at http://localhost:${PORT}`);
+// });
 
-
-
-
+export default app;
 
 
 
