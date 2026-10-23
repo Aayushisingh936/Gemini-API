@@ -1,4 +1,3 @@
-
 const questionInput = document.getElementById("question");
 const askBtn = document.getElementById("askBtn");
 const clearBtn = document.getElementById("clearBtn");
@@ -37,28 +36,64 @@ async function askGemini() {
         const response = await fetch("/ask-gemini", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Accept": "application/json"
             },
             body: JSON.stringify({ question })
         });
 
-        const data = await response.json();
+        // Read the response as text first.
+        const responseText = await response.text();
 
-        if (!response.ok) {
-            throw new Error(data.error || "Unable to get an answer.");
+        // Parse JSON safely instead of assuming it is valid.
+        let data = {};
+
+        if (responseText.trim()) {
+            try {
+                data = JSON.parse(responseText);
+            } catch {
+                throw new Error(
+                    `The server returned an invalid response (HTTP ${response.status}). Check the backend server.`
+                );
+            }
+        } else if (response.ok) {
+            throw new Error(
+                "The server returned an empty response. Check the backend API."
+            );
         }
 
-        answer.innerHTML = DOMPurify.sanitize(marked.parse(data.answer || "No answer received."));
+        if (!response.ok) {
+            throw new Error(
+                data.error || `Request failed with status ${response.status}.`
+            );
+        }
+
+        if (typeof data.answer !== "string" || !data.answer.trim()) {
+            throw new Error("Gemini did not return an answer. Please try again.");
+        }
+
+        if (typeof marked !== "undefined" &&
+            typeof DOMPurify !== "undefined") {
+            answer.innerHTML = DOMPurify.sanitize(
+                marked.parse(data.answer)
+            );
+        } else {
+            answer.textContent = data.answer;
+        }
+
         answerStatus.textContent = "Response complete";
 
     } catch (error) {
-        console.error(error);
-        answer.textContent = error.message || "Unable to connect to the server.";
+        console.error("Ask Gemini error:", error);
+
+        answer.textContent = error.message ||
+            "Unable to connect to the server. Please try again.";
+
         answerStatus.textContent = "Something went wrong";
 
     } finally {
         askBtn.disabled = false;
-        askBtn.innerHTML = "Ask Gemini <span>→</span>";
+        askBtn.innerHTML = 'Ask Gemini <span>→</span>';
     }
 }
 
@@ -74,7 +109,15 @@ questionInput.addEventListener("keydown", (event) => {
 clearBtn.addEventListener("click", () => {
     questionInput.value = "";
     charCount.textContent = "0 / 5000";
-    answer.innerHTML = '<p class="placeholder">Your answer will appear here. Enter a question above to get started!</p>';
+
+    answer.innerHTML = `
+        <p class="placeholder">
+            Your answer will appear here. Enter a question above
+            to get started!
+        </p>
+    `;
+
     answerStatus.textContent = "Waiting for your question";
     questionInput.focus();
 });
+

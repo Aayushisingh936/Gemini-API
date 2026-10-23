@@ -1,4 +1,3 @@
-
 import express from "express";
 import dotenv from "dotenv";
 import { GoogleGenAI } from "@google/genai";
@@ -64,7 +63,7 @@ Question: ${question}`
         });
 
     } catch (error) {
-        console.error("Gemini API error:", error.message);
+        console.error("Gemini API error:", error);
 
         res.status(500).json({
             error: "Unable to generate an answer. Please try again."
@@ -73,9 +72,9 @@ Question: ${question}`
 });
 
 // Start server
-// app.listen(PORT, () => {
-//     console.log(`Server running at http://localhost:${PORT}`);
-// });
+app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+});
 
 export default app;
 
