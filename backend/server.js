@@ -96,7 +96,7 @@ import { GoogleGenAI } from "@google/genai";
 import path from "path";
 import { fileURLToPath } from "url";
 
-dotenv.config();
+dotenv.config({ path: "../.env" });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -104,7 +104,7 @@ const PORT = process.env.PORT || 3000;
 // Resolve frontend directory
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const frontendPath = path.join(__dirname, "frontend");
+const frontendPath = path.resolve(__dirname, "../frontend");
 
 // Middleware
 app.use(express.json());
